@@ -1,4 +1,5 @@
 const {Schema, model} = require("mongoose");
+const { link } = require("../rutas/articulo");
 
 const ArticuloSchema = Schema({
     titulo: {
@@ -17,7 +18,18 @@ const ArticuloSchema = Schema({
     type: String,
     default: "default.png"
     }
+    ,
 
+    link: {
+        type: String,
+        required: false
+    } ,
+
+    Numero_edicion: {
+        type: Number,
+        required: true
+    }
 });
 
 module.exports = model("Articulo", ArticuloSchema, "articulos");
+                       //aticulos

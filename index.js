@@ -2,6 +2,7 @@ const { dbConnection } = require ("./database/connection");
 const express = require("express");
 const cors = require("cors");
 
+
 dbConnection();
 
 console.log("hola mundo");
@@ -14,9 +15,16 @@ const puerto = 3900;
 app.use( cors());
 
 //Convertir body a objeto js
-app.use( express.json());
+app.use( express.json()); //Recibir datos con content-type app/json
+app.use( express.urlencoded({ extended:true})); //form-urlencoded
 
-//Rutas
+//RUTAS
+const rutas_articulo = require ("./rutas/articulo");
+
+//Cargo las rutas
+app.use("/api", rutas_articulo);
+
+//Rutas prueba harcodeadas
 app.get("/probando", (req, res) => {
     
     console.log("Ruta probando funcionando");
