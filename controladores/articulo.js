@@ -1,4 +1,6 @@
 const validator = require("validator");
+const Articulo = require("../modelos/Articulo");
+
 
 const prueba = (req, res) => {
     return res.status(200).json({
@@ -19,22 +21,11 @@ const curso = (req, res) => {
     }]);
 };
 
-const saludo = (req, res) => {
-    return res.status(200).json({
-        mensaje: "Hola"
-    });
-};
-
-const despedida = (req, res) => {
-    return res.status(200).json({
-        mensaje: "Adiós"
-    });
-};
 
 
+const crear = async (req, res) => {
 
-
-const crear = (req, res) => {
+    
     //Recoger paramámetros por POST a guardar
     let parametros = req.body;
     //Validar datos
@@ -55,27 +46,63 @@ const crear = (req, res) => {
     }
 
     //Crear el objeto a guardar
-
+    const articulo = new Articulo(parametros);
     //Asignar valores a objeto basado en el modelo (manual o automático)
+    //articulo.titulo = parametros.titulo;
+
 
     //Guardar el articulo en la base de datos
+    try {
+        const articuloGuardado = await articulo.save();
+        return res.status(200).json({ articulo: articuloGuardado });
+      } catch (err) {
+        console.error(err);
+        return res.status(500).send({ mensaje: 'Error al guardar' });
+      }
 
-    //Devolver el resultado
-     return res.status(200).json({
-        mensaje: "Acción de guardar", 
-        parametros,
-    });
+      //Devolver resultado
+      return res.status(200).json({
+        status: "success",
+        articulo: articuloGuardado,
+        mensaje: "Artículo creado con éxito!!"
+    })
 
-    
 }
+
+const listar = async (req, res) => {
+    try {
+        const articulos = await Articulo.find({});
+
+        if (!articulos || articulos.length === 0) {
+            return res.status(404).json({
+                status: 'error',
+                mensaje: 'No se han encontrado artículos'
+            });
+        }
+
+        return res.status(200).json({
+            status: 'success',
+            articulos
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            status: 'error',
+            mensaje: 'Error al obtener los artículos'
+        });
+    }
+
+};
 
 module.exports = {
     prueba, 
     curso,
     crear,
-    saludo,
-    despedida
+    listar
+   
 };
+
+
 
 
 

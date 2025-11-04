@@ -1,5 +1,5 @@
 const {Schema, model} = require("mongoose");
-const { link } = require("../rutas/articulo");
+
 
 const ArticuloSchema = Schema({
     titulo: {
@@ -27,7 +27,7 @@ const ArticuloSchema = Schema({
 
     Numero_edicion: {
         type: Number,
-        required: true
+        required: false
     }
 });
 
