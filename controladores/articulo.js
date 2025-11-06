@@ -71,7 +71,10 @@ const crear = async (req, res) => {
 
 const listar = async (req, res) => {
     try {
-        const articulos = await Articulo.find({});
+        const articulos = await Articulo.find({})
+        
+            .limit(3)
+            .sort({ fecha: -1 });
 
         if (!articulos || articulos.length === 0) {
             return res.status(404).json({
@@ -82,6 +85,7 @@ const listar = async (req, res) => {
 
         return res.status(200).json({
             status: 'success',
+            contador: articulos.length,
             articulos
         });
     } catch (error) {
@@ -91,16 +95,60 @@ const listar = async (req, res) => {
             mensaje: 'Error al obtener los artículos'
         });
     }
-
 };
+
+const uno = async (req, res) => {
+    try {
+        // Recoger el id de la url
+        const id = req.params.id;
+
+        // Buscar el artículo usando async/await
+        const articulo = await Articulo.findById(id);
+
+        // Si no existe, devolver error
+        if (!articulo) {
+            return res.status(404).json({
+                status: 'error',
+                mensaje: 'No se ha encontrado el artículo'
+            });
+        }
+
+        // Devolver resultado
+        return res.status(200).json({
+            status: 'success',
+            articulo
+        });
+
+    } catch (error) {
+        console.error(error);
+        
+        // Si el ID no es válido (error de formato)
+        if (error.name === 'CastError') {
+            return res.status(400).json({
+                status: 'error',
+                mensaje: 'ID de artículo no válido'
+            });
+        }
+
+        // Cualquier otro error
+        return res.status(500).json({
+            status: 'error',
+            mensaje: 'Error al obtener el artículo'
+        });
+    }
+}
 
 module.exports = {
     prueba, 
     curso,
     crear,
-    listar
+    listar,
+    uno
    
 };
+
+
+
 
 
 

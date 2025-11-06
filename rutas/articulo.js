@@ -8,7 +8,8 @@ router.get("/ruta-de-prueba", ArticuloControlador.prueba);
 router.get("/curso", ArticuloControlador.curso);
 
 //Rutas útiles
-router.get("/crear", ArticuloControlador.crear);
+router.post("/crear", ArticuloControlador.crear);
 router.get("/articulos", ArticuloControlador.listar);
+router.get("/articulo/:id", ArticuloControlador.uno);
 
 module.exports = router;
