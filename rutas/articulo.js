@@ -1,5 +1,10 @@
 const express = require("express");
-const router = express.Router();    
+const multer = require("multer");
+const router = express.Router();
+
+const almacenamiento = multer.diskStorage({
+
+})
 
 const ArticuloControlador = require("../controladores/articulo");
 
@@ -11,5 +16,8 @@ router.get("/curso", ArticuloControlador.curso);
 router.post("/crear", ArticuloControlador.crear);
 router.get("/articulos", ArticuloControlador.listar);
 router.get("/articulo/:id", ArticuloControlador.uno);
+router.delete("/borrar/:id", ArticuloControlador.borrar);
+router.put("/editar/:id", ArticuloControlador.editar);
+router.post("/subir-imagen/:id", ArticuloControlador.subir);
 
 module.exports = router;
